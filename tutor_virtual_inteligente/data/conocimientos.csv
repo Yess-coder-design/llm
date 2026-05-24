@@ -31,3 +31,39 @@ pregunta,respuesta,categoria
 ¿Qué es un modelo de lenguaje?,"Un modelo de lenguaje es un sistema de inteligencia artificial entrenado con grandes cantidades de texto para predecir y generar lenguaje, base de asistentes y chatbots modernos.",Ciencia de Datos
 ¿Qué es entrenar un modelo?,"Entrenar un modelo significa mostrarle muchos datos para que ajuste sus parámetros internos y aprenda a reconocer patrones, de modo que luego pueda hacer predicciones sobre datos nuevos.",Ciencia de Datos
 ¿Qué es un dataset?,"Un dataset es un conjunto de datos organizado, normalmente en forma de tabla, que se usa para analizar información o para entrenar y evaluar modelos de machine learning.",Ciencia de Datos
+¿Qué es Python?,"Python es un lenguaje de programación de alto nivel, fácil de leer y muy usado en ciencia de datos, inteligencia artificial, desarrollo web y automatización.",Programación
+¿Qué es un operador en programación?,"Un operador es un símbolo que realiza una operación sobre uno o más valores. Por ejemplo: + (suma), - (resta), == (comparar igualdad) o and (operador lógico).",Programación
+¿Qué es la indentación en Python?,"La indentación son los espacios al inicio de una línea. En Python NO es opcional: define qué instrucciones pertenecen a un bloque, como el cuerpo de un if, un bucle o una función.",Programación
+¿Qué es un error de sintaxis?,"Un error de sintaxis ocurre cuando el código no respeta las reglas del lenguaje, por ejemplo olvidar dos puntos o un paréntesis. El programa no se ejecuta hasta corregirlo.",Programación
+¿Qué es depurar o debuggear?,"Depurar (debug) es el proceso de encontrar y corregir errores en un programa, observando cómo se comporta el código paso a paso para localizar la causa del problema.",Programación
+¿Qué es una librería o biblioteca?,"Una librería es un conjunto de código ya hecho que puedes reutilizar en tus programas. Por ejemplo, Pandas y Scikit-Learn son librerías de Python.",Programación
+¿Qué es un parámetro de una función?,"Un parámetro es una variable que recibe una función para trabajar con ella. Al llamar a la función, le pasas valores concretos llamados argumentos.",Programación
+¿Qué es la recursividad?,"La recursividad ocurre cuando una función se llama a sí misma para resolver un problema dividiéndolo en casos más pequeños, hasta llegar a un caso base que detiene las llamadas.",Programación
+¿Qué es una cadena de texto o string?,"Un string es un tipo de dato que representa texto, es decir, una secuencia de caracteres. En Python se escribe entre comillas, por ejemplo 'Hola mundo'.",Programación
+¿Qué es un valor booleano?,"Un booleano es un tipo de dato que solo puede tomar dos valores: True (verdadero) o False (falso). Se usa para tomar decisiones en condiciones.",Programación
+¿Qué es un algoritmo?,"Un algoritmo es una secuencia ordenada de pasos bien definidos que resuelve un problema o realiza una tarea, como una receta de cocina para la computadora.",Programación
+¿Qué es Git?,"Git es un sistema de control de versiones que registra los cambios en el código a lo largo del tiempo, permite volver a versiones anteriores y trabajar en equipo sin perder información.",Programación
+¿Qué es una clase en programación orientada a objetos?,"Una clase es una plantilla que define cómo serán los objetos: qué datos (atributos) y qué acciones (métodos) tendrán. A partir de una clase se crean objetos.",Programación
+¿Qué es un objeto en programación?,"Un objeto es una instancia concreta de una clase. Si la clase es 'Coche', un objeto sería un coche específico con su color y modelo propios.",Programación
+¿Qué es la resta?,"La resta es la operación matemática que quita una cantidad de otra para hallar la diferencia. Por ejemplo: 7 - 3 = 4.",Matemáticas
+¿Qué es la multiplicación?,"La multiplicación es una suma abreviada de un mismo número varias veces. Por ejemplo: 4 x 3 es sumar 4 tres veces (4+4+4) = 12.",Matemáticas
+¿Qué es la división?,"La división reparte una cantidad en partes iguales o indica cuántas veces cabe un número en otro. Por ejemplo: 12 / 3 = 4.",Matemáticas
+¿Qué es una potencia?,"Una potencia es multiplicar un número (la base) por sí mismo varias veces (el exponente). Por ejemplo: 2^3 = 2 x 2 x 2 = 8.",Matemáticas
+¿Qué es la raíz cuadrada?,"La raíz cuadrada de un número es el valor que, multiplicado por sí mismo, da ese número. Por ejemplo, la raíz cuadrada de 9 es 3, porque 3 x 3 = 9.",Matemáticas
+¿Qué es un número primo?,"Un número primo es aquel mayor que 1 que solo se puede dividir exactamente entre 1 y entre sí mismo. Por ejemplo: 2, 3, 5, 7 y 11.",Matemáticas
+¿Qué es la moda en estadística?,"La moda es el valor que más se repite en un conjunto de datos. Por ejemplo, en 2, 3, 3, 5 la moda es 3.",Matemáticas
+¿Qué es el rango en estadística?,"El rango es la diferencia entre el valor más grande y el más pequeño de un conjunto de datos. Indica qué tan dispersos están.",Matemáticas
+¿Qué es la varianza?,"La varianza mide qué tan lejos están los datos de su media, en promedio. Es el cuadrado de la desviación estándar; a mayor varianza, más dispersos los datos.",Matemáticas
+¿Qué es el teorema de Pitágoras?,"El teorema de Pitágoras dice que en un triángulo rectángulo, el cuadrado de la hipotenusa es igual a la suma de los cuadrados de los catetos: a² + b² = c².",Matemáticas
+¿Qué es la inteligencia artificial?,"La inteligencia artificial (IA) es el campo que busca que las máquinas realicen tareas que normalmente requieren inteligencia humana, como entender lenguaje, ver imágenes o tomar decisiones.",Ciencia de Datos
+¿Qué es la regresión lineal?,"La regresión lineal es un modelo que busca la línea recta que mejor describe la relación entre variables, para predecir un valor numérico, como el precio de una casa según su tamaño.",Ciencia de Datos
+¿Qué es la clasificación en machine learning?,"La clasificación es una tarea de aprendizaje supervisado donde el modelo asigna cada dato a una categoría, por ejemplo decidir si un correo es 'spam' o 'no spam'.",Ciencia de Datos
+¿Qué es el clustering o agrupamiento?,"El clustering es una técnica de aprendizaje no supervisado que agrupa datos parecidos entre sí sin conocer las etiquetas, por ejemplo segmentar clientes por comportamiento.",Ciencia de Datos
+¿Qué es el sobreajuste u overfitting?,"El sobreajuste ocurre cuando un modelo aprende demasiado los datos de entrenamiento, incluso el ruido, y por eso falla al predecir datos nuevos que no había visto.",Ciencia de Datos
+¿Qué son los datos de entrenamiento y de prueba?,"Los datos de entrenamiento se usan para que el modelo aprenda, y los de prueba para evaluar qué tan bien predice con datos que no vio antes. Así se mide su rendimiento real.",Ciencia de Datos
+¿Qué es NumPy?,"NumPy es una librería de Python para cálculo numérico. Permite trabajar de forma eficiente con arreglos y matrices, y es la base de muchas otras librerías de datos.",Ciencia de Datos
+¿Qué es Matplotlib?,"Matplotlib es una librería de Python para crear gráficas, como líneas, barras o dispersión, muy útil para visualizar y entender los datos.",Ciencia de Datos
+¿Qué es una red neuronal?,"Una red neuronal es un modelo inspirado en el cerebro, formado por capas de 'neuronas' conectadas que aprenden patrones complejos a partir de los datos.",Ciencia de Datos
+¿Qué es la limpieza de datos?,"La limpieza de datos es el proceso de corregir o eliminar datos incorrectos, duplicados o faltantes, para que el análisis y los modelos sean confiables.",Ciencia de Datos
+¿Qué es la tokenización en NLP?,"La tokenización es dividir un texto en unidades más pequeñas llamadas tokens, normalmente palabras, para que la computadora pueda procesarlo y analizarlo.",Ciencia de Datos
+¿Qué son las stopwords o palabras vacías?,"Las stopwords son palabras muy comunes (como 'el', 'la', 'de', 'que') que aportan poco significado y suelen eliminarse antes de analizar un texto en NLP.",Ciencia de Datos
