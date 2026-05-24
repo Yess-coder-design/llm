@@ -139,6 +139,19 @@ def cargar_base_conocimientos(ruta_csv: str) -> pd.DataFrame:
     # Quitamos filas vacías o incompletas para no romper el modelo.
     df = df.dropna(subset=["pregunta", "respuesta"]).reset_index(drop=True)
 
+    # --- Variantes: "varias formas de preguntar lo mismo" ---
+    # Una misma celda 'pregunta' puede contener distintas formas de preguntar
+    # lo mismo, separadas por el carácter '|'. Por ejemplo:
+    #   "¿Qué es una variable? | que es una variable | define variable"
+    # Aquí separamos cada forma en su PROPIA fila, conservando la misma
+    # respuesta y categoría. Así el tutor reconoce muchas más maneras de
+    # preguntar sin necesidad de duplicar el texto de la respuesta.
+    df["pregunta"] = df["pregunta"].astype(str).str.split("|")  # lista de variantes
+    df = df.explode("pregunta")                # una fila por cada variante
+    df["pregunta"] = df["pregunta"].str.strip()  # quitamos espacios sobrantes
+    df = df[df["pregunta"] != ""]              # descartamos variantes vacías
+    df = df.reset_index(drop=True)             # reindexamos tras separar
+
     # Si después de limpiar no quedó nada, avisamos.
     if df.empty:
         raise ValueError("La base de conocimientos no tiene filas válidas.")
