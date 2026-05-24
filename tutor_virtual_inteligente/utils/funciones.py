@@ -177,7 +177,8 @@ class TutorVirtual:
     >>> print(resultado["respuesta"])
     """
 
-    def __init__(self, ruta_csv: str, umbral: float = 0.15):
+    def __init__(self, ruta_csv: str, umbral: float = 0.20,
+                 peso_palabra: float = 0.6, peso_caracter: float = 0.4):
         """
         Constructor: prepara el tutor en cuanto se crea el objeto.
 
@@ -189,29 +190,79 @@ class TutorVirtual:
             Similitud mínima (entre 0 y 1) para aceptar una respuesta.
             Si la mejor coincidencia queda por debajo, el tutor responde
             que no encontró información suficiente.
+        peso_palabra : float
+            Peso del modelo por PALABRAS en la similitud final (significado).
+        peso_caracter : float
+            Peso del modelo por CARACTERES en la similitud final (tolerancia
+            a errores de escritura). peso_palabra + peso_caracter debería sumar 1.
         """
         # Guardamos los parámetros como atributos del objeto.
         self.ruta_csv = ruta_csv
         self.umbral = umbral
+        self.peso_palabra = peso_palabra
+        self.peso_caracter = peso_caracter
 
         # Cargamos la base de conocimientos (DataFrame de Pandas).
         self.df = cargar_base_conocimientos(ruta_csv)
 
         # Normalizamos TODAS las preguntas y las guardamos en una columna nueva.
-        # Esta es la versión "limpia" que usará el vectorizador.
+        # Esta es la versión "limpia" que usarán los vectorizadores.
         self.df["pregunta_norm"] = self.df["pregunta"].apply(normalizar_texto)
 
-        # Creamos el vectorizador TF-IDF.
+        # --- Modelo 1: vectorizador TF-IDF por PALABRAS ---
         #   - ngram_range=(1, 2): considera palabras sueltas y pares de palabras.
         #   - stop_words: ignora las palabras vacías en español.
-        self.vectorizador = TfidfVectorizer(
+        # Capta el SIGNIFICADO: entiende qué palabras importan en la pregunta.
+        self.vectorizador_palabra = TfidfVectorizer(
             stop_words=list(STOPWORDS_ES),
             ngram_range=(1, 2),
         )
 
-        # Entrenamos (fit) el vectorizador con las preguntas normalizadas y
-        # obtenemos la matriz TF-IDF (una fila por pregunta de la base).
-        self.matriz_tfidf = self.vectorizador.fit_transform(self.df["pregunta_norm"])
+        # --- Modelo 2: vectorizador TF-IDF por CARACTERES ---
+        #   - analyzer='char_wb': genera n-gramas de caracteres DENTRO de cada
+        #     palabra (respetando los límites de palabra).
+        #   - ngram_range=(3, 5): fragmentos de 3 a 5 letras.
+        # Capta la FORMA de las palabras: aunque haya errores de escritura,
+        # 'programacion' y 'progrmacion' comparten casi todos sus fragmentos,
+        # así que siguen pareciéndose. Esto da tolerancia AUTOMÁTICA a typos.
+        self.vectorizador_caracter = TfidfVectorizer(
+            analyzer="char_wb",
+            ngram_range=(3, 5),
+        )
+
+        # Entrenamos (fit) ambos vectorizadores con las preguntas normalizadas
+        # y guardamos sus matrices TF-IDF (una fila por pregunta de la base).
+        self.matriz_palabra = self.vectorizador_palabra.fit_transform(
+            self.df["pregunta_norm"]
+        )
+        self.matriz_caracter = self.vectorizador_caracter.fit_transform(
+            self.df["pregunta_norm"]
+        )
+
+    # -----------------------------------------------------------------------
+    # MÉTODO PRIVADO: _calcular_similitudes
+    # -----------------------------------------------------------------------
+    def _calcular_similitudes(self, pregunta_norm: str):
+        """
+        Combina la similitud por palabras y por caracteres en un solo puntaje.
+
+        Devuelve un arreglo con la similitud (0 a 1) de la pregunta del usuario
+        contra cada pregunta de la base.
+
+        Idea: el modelo de palabras acierta cuando el usuario escribe bien;
+        el modelo de caracteres "rescata" la pregunta cuando hay errores de
+        escritura. La mezcla ponderada aprovecha lo mejor de ambos.
+        """
+        # Transformamos la pregunta con CADA vectorizador (transform, no fit).
+        vector_palabra = self.vectorizador_palabra.transform([pregunta_norm])
+        vector_caracter = self.vectorizador_caracter.transform([pregunta_norm])
+
+        # Similitud coseno contra toda la base, con cada modelo.
+        sim_palabra = cosine_similarity(vector_palabra, self.matriz_palabra)[0]
+        sim_caracter = cosine_similarity(vector_caracter, self.matriz_caracter)[0]
+
+        # Mezcla ponderada de ambas similitudes.
+        return self.peso_palabra * sim_palabra + self.peso_caracter * sim_caracter
 
     # -----------------------------------------------------------------------
     # MÉTODO: responder
@@ -248,13 +299,9 @@ class TutorVirtual:
         # 1) Normalizamos la pregunta del usuario igual que las del CSV.
         pregunta_norm = normalizar_texto(pregunta_usuario)
 
-        # 2) Transformamos la pregunta a su vector TF-IDF usando el MISMO
-        #    vectorizador ya entrenado (importante: transform, no fit_transform).
-        vector_usuario = self.vectorizador.transform([pregunta_norm])
-
-        # 3) Calculamos la similitud coseno entre la pregunta del usuario y
-        #    TODAS las preguntas de la base. Resultado: un arreglo de similitudes.
-        similitudes = cosine_similarity(vector_usuario, self.matriz_tfidf)[0]
+        # 2-3) Calculamos la similitud COMBINADA (palabras + caracteres) entre
+        #      la pregunta del usuario y TODAS las preguntas de la base.
+        similitudes = self._calcular_similitudes(pregunta_norm)
 
         # 4) Buscamos el índice de la pregunta con mayor similitud.
         indice_mejor = int(similitudes.argmax())
@@ -296,12 +343,9 @@ class TutorVirtual:
         Es útil para mostrar "quizás también te interese" o para entender
         cómo está razonando el tutor.
         """
-        # Normalizamos y vectorizamos la pregunta del usuario.
+        # Normalizamos la pregunta y calculamos la similitud combinada.
         pregunta_norm = normalizar_texto(pregunta_usuario)
-        vector_usuario = self.vectorizador.transform([pregunta_norm])
-
-        # Calculamos similitudes contra toda la base.
-        similitudes = cosine_similarity(vector_usuario, self.matriz_tfidf)[0]
+        similitudes = self._calcular_similitudes(pregunta_norm)
 
         # argsort ordena de menor a mayor; con [::-1] lo invertimos (mayor primero)
         # y nos quedamos con los primeros n índices.

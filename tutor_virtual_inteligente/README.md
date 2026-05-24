@@ -155,12 +155,18 @@ jupyter notebook notebooks/desarrollo.ipynb
 
 1. **Normalización:** las preguntas se pasan a minúsculas, se les quitan
    acentos y signos para uniformar el texto.
-2. **TF-IDF:** cada pregunta se convierte en un vector numérico que refleja la
-   importancia de sus palabras.
-3. **Similitud coseno:** la pregunta del estudiante se compara con todas las de
-   la base; gana la de mayor similitud.
-4. **Umbral:** si la mejor coincidencia es muy baja, el tutor responde que no
-   tiene información suficiente, evitando respuestas sin sentido.
+2. **Doble vectorización TF-IDF (modelo híbrido):**
+   - Un vectorizador por **palabras** (1 y 2 palabras) que capta el *significado*.
+   - Un vectorizador por **n-gramas de caracteres** (`char_wb`, fragmentos de
+     3 a 5 letras) que capta la *forma* de las palabras. Como `programacion` y
+     `progrmacion` comparten casi todos sus fragmentos, el tutor tolera de forma
+     **automática** los errores de escritura, aunque el typo no esté en el CSV.
+3. **Similitud coseno combinada:** se calcula la similitud con cada modelo y se
+   mezclan de forma ponderada (60% palabras + 40% caracteres). La pregunta de la
+   base con mayor puntaje es la que gana.
+4. **Umbral:** si la mejor coincidencia queda por debajo del umbral (0.20), el
+   tutor responde que no tiene información suficiente, evitando respuestas sin
+   sentido para preguntas fuera de tema.
 
 ---
 
