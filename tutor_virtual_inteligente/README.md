@@ -185,7 +185,11 @@ escribir **varias formas separadas por el carácter `|`** en la columna
 
 Al cargar el CSV, el sistema separa automáticamente cada forma en su propia
 entrada (sin duplicar el texto de la respuesta). Actualmente hay **68 conceptos**
-con un total de **272 formas de preguntar**.
+con un total de **330 formas de preguntar**.
+
+Entre esas variantes también se incluyen **errores de escritura comunes**
+(por ejemplo `phyton`, `varible`, `dicionario` o `probablidad`), para que el
+tutor entienda la pregunta aunque tenga faltas de ortografía.
 
 ¡No hace falta tocar el código! El sistema vuelve a entrenarse automáticamente
 al iniciar.
